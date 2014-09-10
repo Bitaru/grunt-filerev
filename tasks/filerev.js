@@ -81,7 +81,7 @@ module.exports = function (grunt) {
       });
 
       next();
-    }, this.async());
+    });
 
     grunt.filerev = filerev;
   });
