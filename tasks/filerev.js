@@ -4,6 +4,7 @@ var path = require('path');
 var fs = require('fs');
 var chalk = require('chalk');
 var eachAsync = require('each-async');
+var mustache = require('mustache');
 
 module.exports = function (grunt) {
   grunt.registerMultiTask('filerev', 'File revisioning based on content hashing', function () {
@@ -47,7 +48,22 @@ module.exports = function (grunt) {
         var hash = crypto.createHash(options.algorithm).update(grunt.file.read(file), options.encoding).digest('hex');
         var suffix = hash.slice(0, options.length);
         var ext = path.extname(file);
-        var newName = [path.basename(file, ext), suffix, ext.slice(1)].join('.');
+        var newName;
+        if (options.filename) {
+          var templateData = {
+            name: path.basename(file, ext),
+            hash: suffix,
+            ext: ext.slice(1)
+          };
+          try {
+            newName = mustache.render(options.filename, templateData);
+          }
+          catch (err) {
+            grunt.fail.fatal('Template error in options.filename: ' + err.message);
+          }
+        } else {
+          newName = [path.basename(file, ext), suffix, ext.slice(1)].join('.');
+        }
         var resultPath;
 
         if (move) {

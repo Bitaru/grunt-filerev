@@ -24,7 +24,8 @@
   ],
   "dependencies": {
     "chalk": "^0.5.1",
-    "each-async": "0.1.0"
+    "each-async": "0.1.0",
+    "mustache": "^0.8.2"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

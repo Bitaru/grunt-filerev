@@ -45,6 +45,13 @@ module.exports = function (grunt) {
         src: ['*'],
         dest: 'test/tmp/expand'
       },
+      withFilenameTemplate: {
+        options: {
+          filename: '{{name}}-dist-{{hash}}.{{ext}}',
+        },
+        src: ['test/fixtures/file.png'],
+        dest: 'test/tmp'
+      },
       withSummaryAttributeName: {
         options: {
           summary: 'foo'
