@@ -48,7 +48,7 @@ module.exports = function (grunt) {
         var hash = crypto.createHash(options.algorithm).update(grunt.file.read(file), options.encoding).digest('hex');
         var suffix = hash.slice(0, options.length);
         var ext = path.extname(file);
-        var newName;
+        var newName, tmpName;
         if (options.filename) {
           var templateData = {
             name: path.basename(file, ext),
@@ -62,7 +62,9 @@ module.exports = function (grunt) {
             grunt.fail.fatal('Template error in options.filename: ' + err.message);
           }
         } else {
-          newName = [path.basename(file, ext), suffix, ext.slice(1)].join('.');
+          tmpName = [path.basename(file, ext), ext.slice(1)];
+          tmpName.splice(options.prepend ? 0 : 1, 0, suffix);
+          newName = tmpName.join('.');
         }
         var resultPath;
 
